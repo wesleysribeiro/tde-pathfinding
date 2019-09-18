@@ -25,6 +25,7 @@ def on_click(event):
         current_color = '#659df7'
 
     if 'filled' not in canvas.gettags(CURRENT):
+        
         # TODO: fix this mess
         tags = list(canvas.gettags(CURRENT))
         tags.append("filled")
