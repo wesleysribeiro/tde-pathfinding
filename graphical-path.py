@@ -32,6 +32,8 @@ def main():
 
     canvas = Canvas(root, width=800, height=600)
 
+
+    # TODO: Make this more generic
     for x in range(0, 800, 20):
         for y in range(0, 600, 15):
             canvas.create_rectangle(x, y, x + 20, y + 15, fill='white')
