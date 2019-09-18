@@ -1,6 +1,15 @@
 from tkinter import *
+from enum import Enum
+
 
 click_counter = 0
+
+
+# This will be useful somehow
+class Click(Enum):
+    ORIGIN = 0,
+    DESTINY = 1,
+    OBSTACLE = 2
 
 
 def on_click(event):
@@ -8,7 +17,6 @@ def on_click(event):
 
     canvas = event.widget
 
-    # TODO: friendly colors
     if click_counter == 0:
         current_color = '#1b870f'
     elif click_counter == 1:
@@ -17,8 +25,7 @@ def on_click(event):
         current_color = '#659df7'
 
     if 'filled' not in canvas.gettags(CURRENT):
-        # TODO: fix this
-        # This just looks awful, let's get rid of it
+        # TODO: fix this mess
         tags = list(canvas.gettags(CURRENT))
         tags.append("filled")
         tags = tuple(tags)
@@ -37,7 +44,7 @@ def main():
     # TODO: Make this more generic
     for x in range(0, 800, 40):
         for y in range(0, 600, 20):
-            canvas.create_rectangle(x, y, x + 40, y + 20, outline='#e1f6fa', fill='#a8eaf7')
+            canvas.create_rectangle(x, y, x + 40, y + 20, outline='#c9f6ff', fill='#a8eaf7')
 
     canvas.bind("<Button-1>", on_click)
 
