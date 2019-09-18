@@ -3,6 +3,7 @@ from enum import Enum
 
 
 click_counter = 0
+FILLED_TAG = 'filled'
 
 
 # This will be useful somehow
@@ -13,7 +14,7 @@ class Click(Enum):
 
 
 def on_click(event):
-    global click_counter
+    global click_counter, FILLED_TAG
 
     canvas = event.widget
 
@@ -24,11 +25,11 @@ def on_click(event):
     else:
         current_color = '#659df7'
 
-    if 'filled' not in canvas.gettags(CURRENT):
-        
+    # If the rect has not been filled yet, fill it with the current color
+    if FILLED_TAG not in canvas.gettags(CURRENT):
         # TODO: fix this mess
         tags = list(canvas.gettags(CURRENT))
-        tags.append("filled")
+        tags.append(FILLED_TAG)
         tags = tuple(tags)
         canvas.itemconfig(CURRENT, fill=current_color, tags=tags)
         click_counter += 1
@@ -42,7 +43,7 @@ def main():
 
     canvas = Canvas(root, width=800, height=600)
 
-    # TODO: Make this more generic
+    # TODO: Make this generic in a separete function
     for x in range(0, 800, 40):
         for y in range(0, 600, 20):
             canvas.create_rectangle(x, y, x + 40, y + 20, outline='#c9f6ff', fill='#a8eaf7')
