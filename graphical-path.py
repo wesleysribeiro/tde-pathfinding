@@ -35,19 +35,24 @@ def on_click(event):
         click_counter += 1
 
 
+# TODO: Do a better function
+def draw_scene(canvas, width, height):
+    step_x = width//20
+    step_y = height//20
+    for x in range(0, width, step_x):
+        for y in range(0, height, step_y):
+            canvas.create_rectangle(x, y, x + step_x, y + step_y, outline='#c9f6ff', fill='#a8eaf7')
+
+
 def main():
     root = Tk()
 
     root.title("Pathfinding project")
-    root.geometry("800x600")
+    window_geometry = {'width': 800, 'height': 600}
+    root.geometry(str(window_geometry['width'])+"x"+str(window_geometry['height'])) # convert to string "widthxheight"
 
-    canvas = Canvas(root, width=800, height=600)
-
-    # TODO: Make this generic in a separete function
-    for x in range(0, 800, 40):
-        for y in range(0, 600, 20):
-            canvas.create_rectangle(x, y, x + 40, y + 20, outline='#c9f6ff', fill='#a8eaf7')
-
+    canvas = Canvas(root, width=window_geometry['width'], height=window_geometry['height'])
+    draw_scene(canvas, window_geometry['width'], window_geometry['height'])
     canvas.bind("<Button-1>", on_click)
 
     canvas.pack()
