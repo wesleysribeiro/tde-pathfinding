@@ -35,7 +35,7 @@ def on_click(event):
         click_counter += 1
 
 
-# TODO: Do a better function
+# TODO: Do a better function to have a bigger scene
 def draw_scene(canvas, width, height):
     step_x = width//20
     step_y = height//20
