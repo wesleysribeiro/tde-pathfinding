@@ -20,7 +20,8 @@ class Window:
         height = self.window_geometry['height']
 
         # Converting to a string with pattern = "heightxwidth"
-        parent.geometry(str(width) + "x" + str(height + 150))
+        # Adds some extra room in the height for the buttons/frame
+        parent.geometry(f"{width}x{height + 150}")
 
         self.canvas = Canvas(parent, width=width, height=height)
         self.draw_scene(width, height)
