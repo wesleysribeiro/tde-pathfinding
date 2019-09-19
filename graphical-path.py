@@ -3,8 +3,8 @@ from enum import Enum
 
 
 class Window:
-    FILLED_TAG = 'filled'
-    rect_matrix = [[]] # Matrix to be passed to the algorithm
+    FILLED_TAG = 'filled' # flag used to check if the rect is already filled
+    rect_matrix = [[]] # TODO: Matrix to be passed to the algorithm
     click_counter = 0
     window_geometry = {'width': 800, 'height': 600}
     submit_button = None
@@ -82,14 +82,15 @@ class Window:
             for y in range(0, height, step_y):
                 self.canvas.create_rectangle(x, y, x + step_x, y + step_y, outline='#c9f6ff', fill='#a8eaf7')
 
+    # TODO: Implement this function
     # Draws the given matrix in the screen
     # def draw_path(matrix):
-    # TODO: Implement this
 
     def enable_submit_button(self):
         self.submit_button.config(state=NORMAL)
 
-    # TODO: Calls the selected algorithm
+    # TODO: Call the selected algorithm function, store the generated matrix, call function draw_path to
+    # to update the current scene
     def on_submit_clicked(self):
         print(f"Submited: {self.current_matrix.get()} with matrix {self.current_algorithm.get()}")
 
