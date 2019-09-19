@@ -4,12 +4,13 @@ from enum import Enum
 
 class Window:
     FILLED_TAG = 'filled'
-    rect_matrix = [[]]
+    rect_matrix = [[]] # Matrix to be passed to the algorithm
     click_counter = 0
     window_geometry = {'width': 800, 'height': 600}
     submit_button = None
-    canvas = None
-    current_algorithm = None
+    canvas = None # This widget's canvas
+    current_algorithm = None # Holds the selected algorithm
+    current_matrix = None # Holds the selected matrix
 
     def __init__(self, parent, title):
         self.parent = parent
@@ -67,7 +68,7 @@ class Window:
             canvas.itemconfig(CURRENT, fill=current_color, tags=tags)
             self.click_counter += 1
 
-            # Origin and destiny were provided, enable
+            # Origin and destiny were provided, enable submit button
             if self.click_counter == 2:
                 self.enable_submit_button()
 
@@ -87,10 +88,9 @@ class Window:
     def enable_submit_button(self):
         self.submit_button.config(state=NORMAL)
 
+    # TODO: Calls the selected algorithm
     def on_submit_clicked(self):
-        print("Return matrix here")
-
-
+        print(f"Submited: {self.current_matrix.get()} with matrix {self.current_algorithm.get()}")
 
 
 def main():
