@@ -21,13 +21,14 @@ class Window:
 
         # Converting to a string with pattern = "heightxwidth"
         # Adds some extra room in the height for the buttons/frame
-        parent.geometry(f"{width}x{height + 150}")
+        frame_height = 50
+        parent.geometry(f"{width}x{height + frame_height}")
 
         self.canvas = Canvas(parent, width=width, height=height)
         self.draw_scene(width, height)
         self.canvas.bind("<Button-1>", self.on_scene_clicked)
 
-        frame = Frame(parent, bg='#dff5f1', height=200, width=width)
+        frame = Frame(parent, height=frame_height, width=width)
         self.canvas.pack()
         default_matrix = "10x10"
         self.current_matrix = StringVar(frame)
@@ -40,6 +41,7 @@ class Window:
         self.current_algorithm.set(default_algorithm)
         select_algorithm = OptionMenu(frame, self.current_algorithm, default_algorithm, "Dijkstra", "Three", "Four")
         select_algorithm.grid(row=0, column=1, padx=20)
+        
         self.submit_button = Button(frame, text='Submit', state=DISABLED, command=self.on_submit_clicked)
         self.submit_button.grid(row=0, column=2, padx=20)
         frame.pack()
@@ -98,6 +100,7 @@ class Window:
 def main():
     root = Tk()
     window = Window(root, "Pathfinding")
+    root.resizable(False, False)
     root.mainloop()
 
 
