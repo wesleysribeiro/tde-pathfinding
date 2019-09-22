@@ -64,11 +64,8 @@ class Window:
 
         # If the rect has not been filled yet, fill it with the current color
         if self.FILLED_TAG not in canvas.gettags(CURRENT):
-            # TODO: fix this mess, find a better way to do this, if there is one
-            tags = list(canvas.gettags(CURRENT))
-            tags.append(self.FILLED_TAG)
-            tags = tuple(tags)
-            canvas.itemconfig(CURRENT, fill=current_color, tags=tags)
+            canvas.addtag_withtag("filled", CURRENT)
+            canvas.itemconfig(CURRENT, fill=current_color)
             self.click_counter += 1
 
             # Origin and destiny were provided, enable submit button
