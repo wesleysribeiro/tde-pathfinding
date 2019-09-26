@@ -11,6 +11,12 @@ class Window:
     current_algorithm = None  # Holds the selected algorithm
     current_matrix = None  # Holds the selected matrix
 
+    class Color(Enum):
+        ORIGIN = "#1b870f",
+        DESTINY = "#a8050a",
+        OBSTACLE = "#659df7",
+        TESTED = "grey"
+
     def __init__(self, parent, title):
         self.parent = parent
         parent.title(title)
@@ -54,21 +60,15 @@ class Window:
         self.click_counter = 0
         self.enable_submit_button(DISABLED)
 
-    class Color(Enum):
-        ORIGIN = "#1b870f",
-        DESTINY = "a8050a",
-        OBSTACLE = "#659df7",
-        TESTED = "grey"
-
     def on_scene_clicked(self, event):
         canvas = event.widget
 
         if self.click_counter == 0:
-            current_color = self.Color.ORIGIN
+            current_color = self.Color.ORIGIN.value
         elif self.click_counter == 1:
-            current_color = self.Color.DESTINY
+            current_color = self.Color.DESTINY.value
         else:
-            current_color = self.Color.OBSTACLE
+            current_color = self.Color.OBSTACLE.value
 
         # If the rect has not been filled yet, fill it with the current color
         if self.FILLED_TAG not in canvas.gettags(CURRENT):
