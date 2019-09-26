@@ -33,7 +33,7 @@ class Window:
         self.current_matrix = StringVar(frame)
         self.current_matrix.set(default_matrix)
         select_matrix = OptionMenu(frame, self.current_matrix, default_matrix,
-                                   "20x20", "30x30", "40x40", "50x50", command=self.on_matrix_changed)
+                                   "20x20", "30x30", "40x40", "50x50", "60x60", command=self.on_matrix_changed)
         select_matrix.grid(row=0, column=0, padx=20)
 
         default_algorithm = "A*"
@@ -44,6 +44,7 @@ class Window:
 
         self.submit_button = Button(frame, text='Submit', state=DISABLED, command=self.on_submit_clicked)
         self.submit_button.grid(row=0, column=2, padx=20)
+
         frame.pack()
 
     def on_matrix_changed(self, event):
@@ -53,21 +54,21 @@ class Window:
         self.click_counter = 0
         self.enable_submit_button(DISABLED)
 
-    # This will be useful somehow, someday, hopefully
-    class Click(Enum):
-        ORIGIN = 0,
-        DESTINY = 1,
-        OBSTACLE = 2
+    class Color(Enum):
+        ORIGIN = "#1b870f",
+        DESTINY = "a8050a",
+        OBSTACLE = "#659df7",
+        TESTED = "grey"
 
     def on_scene_clicked(self, event):
         canvas = event.widget
 
         if self.click_counter == 0:
-            current_color = '#1b870f'
+            current_color = self.Color.ORIGIN
         elif self.click_counter == 1:
-            current_color = '#a8050a'
+            current_color = self.Color.DESTINY
         else:
-            current_color = '#659df7'
+            current_color = self.Color.OBSTACLE
 
         # If the rect has not been filled yet, fill it with the current color
         if self.FILLED_TAG not in canvas.gettags(CURRENT):
