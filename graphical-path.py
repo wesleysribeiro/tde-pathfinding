@@ -1,4 +1,9 @@
 from tkinter import *
+from pathfinding.core.grid import Grid_
+from pathfinding.finder.a_star import AStarFinder
+from pathfinding.finder.best_first import BestFirst
+from pathfinding.finder.breadth_first import BreadthFirstFinder
+from pathfinding.finder.dijkstra import DijkstraFinder
 from enum import Enum
 
 
@@ -10,11 +15,18 @@ class Window:
     canvas = None  # This widget's canvas
     current_algorithm = None  # Holds the selected algorithm
     current_matrix = None  # Holds the selected matrix
+    stepxm = 0
+    stepym = 0
+    sizem = 0
+    inicio = [0, 0]
+    destino = [0, 0]
+    matriz = []
 
     class Color(Enum):
         ORIGIN = "#1b870f",
         DESTINY = "#a8050a",
         OBSTACLE = "#659df7",
+        BACKGROUND = "#a8eaf7",
         TESTED = "grey"
 
     def __init__(self, parent, title):
@@ -42,10 +54,10 @@ class Window:
                                    "20x20", "30x30", "40x40", "50x50", "60x60", command=self.on_matrix_changed)
         select_matrix.grid(row=0, column=0, padx=20)
 
-        default_algorithm = "A*"
+        default_algorithm = "Largura"
         self.current_algorithm = StringVar(frame)
         self.current_algorithm.set(default_algorithm)
-        select_algorithm = OptionMenu(frame, self.current_algorithm, default_algorithm, "Dijkstra", "Algo3", "Algo4")
+        select_algorithm = OptionMenu(frame, self.current_algorithm, default_algorithm, "Custo Uniforme", "A*", "Guloso")
         select_algorithm.grid(row=0, column=1, padx=20)
 
         self.submit_button = Button(frame, text='Submit', state=DISABLED, command=self.on_submit_clicked)
@@ -63,12 +75,19 @@ class Window:
     def on_scene_clicked(self, event):
         canvas = event.widget
 
+        xm = event.x // self.stepxm
+        ym = event.y // self.stepym
+        print('x: '+ str(xm) + '\ty: '+str(ym))
         if self.click_counter == 0:
             current_color = self.Color.ORIGIN.value
+            self.inicio = [ym, xm]
+
         elif self.click_counter == 1:
             current_color = self.Color.DESTINY.value
+            self.destino = [ym, xm]
         else:
             current_color = self.Color.OBSTACLE.value
+            self.matriz[ym][xm] = 0
 
         # If the rect has not been filled yet, fill it with the current color
         if self.FILLED_TAG not in canvas.gettags(CURRENT):
@@ -81,8 +100,15 @@ class Window:
                 self.enable_submit_button(NORMAL)
 
     def draw_scene(self, width, height, size):
+        self.widthm = width
+
         step_x = width // size
         step_y = height // size
+
+        self.stepxm = step_x
+        self.stepym = step_y
+        self.sizem = size
+        self.matriz = [[1 for x in range(0, width // step_x)] for y in range(0, width // step_x)]
 
         row, column = [0, 0] # Used to store the rectangle index in the matrix
         for x in range(0, width, step_x):
@@ -93,9 +119,15 @@ class Window:
             row = 0
             column += 1
 
-    # TODO: Implement this function
-    # Draws the given matrix in the screen
-    # def draw_path(matrix):
+    def draw_path(self, path, tested_nodes):
+        for i, j in path:
+            k = self.canvas.find_withtag([j, i])
+            self.canvas.itemconfig(k, fill="#00C0FF")
+
+        for i, j in tested_nodes:
+            item = self.canvas.find_withtag([j, i])
+            if self.canvas.itemcget(item, "fill") == self.Color.BACKGROUND.value:
+                self.canvas.itemconfig(item, fill=self.Color.TESTED.value)
 
     def enable_submit_button(self, status):
         self.submit_button.config(state=status)
@@ -103,7 +135,29 @@ class Window:
     # TODO: Call the selected algorithm function, store the generated matrix, call function draw_path to
     # to update the current scene
     def on_submit_clicked(self):
-        print(f"Submited: {self.current_matrix.get()} with matrix {self.current_algorithm.get()}")
+        curr_algorithm = self.current_algorithm.get()
+
+        grid = Grid_(matrix=self.matriz)
+
+        start = grid.node(self.inicio[1], self.inicio[0])
+        end = grid.node(self.destino[1], self.destino[0])
+
+        for row in self.matriz:
+            print(row)
+
+        if curr_algorithm == "Custo Uniforme":
+            finder = DijkstraFinder()
+
+        elif curr_algorithm == "A*":
+            finder = AStarFinder()
+
+        elif curr_algorithm == "Guloso":
+            finder = BestFirst()
+        else:
+            finder = BreadthFirstFinder()
+
+        path, runs = finder.find_path(start, end, grid)
+        self.draw_path(path[1:-1:], [])
 
 
 def main():
