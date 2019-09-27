@@ -21,6 +21,7 @@ class Window:
     inicio = [0, 0]
     destino = [0, 0]
     matriz = []
+    stats = None
 
     class Color(Enum):
         ORIGIN = "#1b870f",
@@ -62,6 +63,9 @@ class Window:
 
         self.submit_button = Button(frame, text='Submit', state=DISABLED, command=self.on_submit_clicked)
         self.submit_button.grid(row=0, column=2, padx=20)
+
+        self.stats = Label(frame, text='')
+        self.stats.grid(row=0, column=3)
 
         frame.pack()
 
@@ -132,6 +136,9 @@ class Window:
     def enable_submit_button(self, status):
         self.submit_button.config(state=status)
 
+    def update_stats(self, path, runs):
+        self.stats.configure(text=f"Nos percorridos: {len(path)}\nRuns: {runs}")
+
     # TODO: Call the selected algorithm function, store the generated matrix, call function draw_path to
     # to update the current scene
     def on_submit_clicked(self):
@@ -157,7 +164,9 @@ class Window:
             finder = BreadthFirstFinder()
 
         path, runs = finder.find_path(start, end, grid)
+
         self.draw_path(path[1:-1:], [])
+        self.update_stats(path, runs)
 
 
 def main():
