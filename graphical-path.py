@@ -28,6 +28,7 @@ class Window:
         DESTINY = "#a8050a",
         OBSTACLE = "#659df7",
         BACKGROUND = "#a8eaf7",
+        OUTLINE = "#c9f6ff",
         TESTED = "grey"
 
     def __init__(self, parent, title):
@@ -117,7 +118,8 @@ class Window:
         row, column = [0, 0] # Used to store the rectangle index in the matrix
         for x in range(0, width, step_x):
             for y in range(0, height, step_y):
-                rect = self.canvas.create_rectangle(x, y, x + step_x, y + step_y, outline='#c9f6ff', fill='#a8eaf7')
+                rect = self.canvas.create_rectangle(x, y, x + step_x, y + step_y,
+                                                    outline=self.Color.OUTLINE.value, fill=self.Color.BACKGROUND.value)
                 self.canvas.addtag_withtag([row, column], rect)
                 row += 1
             row = 0
